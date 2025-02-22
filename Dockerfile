@@ -2,7 +2,7 @@
 
 # download all the necessary software to run maven (search this maven base image in DockerHub to see what is included)
 FROM maven:3.8.5-openjdk-11-slim AS builder
-
+ARG MVN_PROFILE="login"
 # create and `cd` into a folder called "app" inside the virtual machine
 WORKDIR /app
 
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY . .
 
 # compile the application inside the "app" folder to generate the war file
-RUN mvn clean package
+RUN mvn clean package -P${MVN_PROFILE}
 
 # download all the necessary software to run tomcat (this is another base image)
 FROM tomcat:10-jdk11

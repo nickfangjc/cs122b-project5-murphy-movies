@@ -1,8 +1,12 @@
+package login;
+
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import login.User;
+
 import java.io.IOException;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")

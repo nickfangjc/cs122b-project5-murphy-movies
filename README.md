@@ -35,17 +35,20 @@ We will build a docker image on an AWS instance, push it to Docker Hub, and run 
 
 ### Build a Docker image on the AWS instance
 `git clone` this repository on the AWS instance, run `git checkout Dockerized` to switch to the `Dockerized` branch
-Go to the root folder of this application. Run `sudo docker build . --platform linux/amd64 -t <DockerHub-user-name>/cs122b-p5-murphy:v1 `
+Go to the root folder of this application. Run `sudo docker build . --build-arg MVN_PROFILE="login" --platform linux/amd64 -t <DockerHub-user-name>/cs122b-p5-murphy-login:v1 `
 - `-t` means giving this image a tag 
+- `--build-arg MVN_PROFILE` specifics the value of MVN_PROFILE in Dockerfile
 - replace `<DockerHub-user-name>` with the username you just registered
 - `cs122b-p5-murphy` is the DockerHub repo name, you may change it to whatever, be consistent in below steps if you do.
 - `v1` is the tag name. The naming convention is `v1` ..`v2` for incremental version number.
 - `--platform linux/amd64` ensures that the image built will be compatible with the CPU architecture of the AWS machines 
 
-Check the created image by running `sudo docker images`. Note the tag and ID of the image `cs122b-p5-murphy`.
+Check the created image by running `sudo docker images`. Note the tag and ID of the image `cs122b-p5-murphy-login`.
+
+Repeat the same step for the `star` profile. Run `sudo docker build . --build-arg MVN_PROFILE="star" --platform linux/amd64 -t <DockerHub-user-name>/cs122b-p5-murphy-star:v1 `
 
 ### Push the image to Docker Hub
-- Push the image to Docker Hub by running the following command: `sudo docker push <DockerHub-user-name>/cs122b-p5-murphy:v1`
+- Push the image to Docker Hub by running the following command: `sudo docker push <DockerHub-user-name>/cs122b-p5-murphy-<profilename>:v1`
 - Log in our Docker Hub web page. We should be able to see the newly pushed image.
 
 ### Use the image to start a Docker container on the AWS instance
