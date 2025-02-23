@@ -43,7 +43,7 @@
 
     <build>
         <finalName>cs122b-project5-murphy-movies</finalName>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>${endpointDir}</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,8 +58,51 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceDirectory>WebContent</warSourceDirectory>
+                    <warSourceExcludes>${excludes}</warSourceExcludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/filter</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>login</id>
+            <properties>
+                <endpointDir>src/login</endpointDir>
+                <excludes>**/index.html, **/index.js</excludes>
+            </properties>
+        </profile>
+        <profile>
+            <id>star</id>
+            <properties>
+                <endpointDir>src/star</endpointDir>
+                <excludes/>
+            </properties>
+        </profile>
+        <profile>
+            <id>default</id>
+            <properties>
+                <endpointDir>src</endpointDir>
+                <excludes/>
+            </properties>
+        </profile>
+    </profiles>
 </project>
