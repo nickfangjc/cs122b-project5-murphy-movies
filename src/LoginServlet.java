@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -21,8 +22,9 @@ public class LoginServlet extends HttpServlet {
         if (username.equals("anteater") && password.equals("123456")) {
             // Login success:
 
-            // set this user into the session
-            request.getSession().setAttribute("user", new User(username));
+            // Generate new JWT and add it to Header
+            String token = JwtUtil.generateToken(username, new HashMap<>());
+            JwtUtil.updateJwtCookie(request, response, token);
 
             responseJsonObject.addProperty("status", "success");
             responseJsonObject.addProperty("message", "success");

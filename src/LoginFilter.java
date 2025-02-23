@@ -1,3 +1,4 @@
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,11 +30,18 @@ public class LoginFilter implements Filter {
             return;
         }
 
-        // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect("login.html");
-        } else {
+        String token = JwtUtil.getCookieValue(httpRequest, "jwtToken");
+        Claims claims = JwtUtil.validateToken(token);
+
+        if (claims != null) {
+            // Store claims in request attributes
+            // Downstream servlets can use claims as the session storage
+            httpRequest.setAttribute("claims", claims);
+
+            // Proceed with the request
             chain.doFilter(request, response);
+        } else {
+            httpResponse.sendRedirect("login.html");
         }
     }
 
